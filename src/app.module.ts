@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 
+import { configureEnvModule } from './configs/environment.configuration';
+import { ClientModule } from './modules/client/client.module';
+
 @Module({
-  imports: [],
-  controllers: [],
-  providers: [],
+  imports: [configureEnvModule(), ClientModule],
 })
 export class AppModule {}
