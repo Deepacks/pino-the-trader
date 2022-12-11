@@ -1,7 +1,12 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ClientService } from './client.service';
 
-@Controller('client')
+@Controller('create')
 export class ClientController {
   constructor(private clientService: ClientService) {}
+
+  @Get('embed')
+  async createEmbed() {
+    return this.clientService.createEmbed();
+  }
 }

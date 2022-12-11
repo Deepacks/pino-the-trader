@@ -20,6 +20,7 @@
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "chalk": "4.1.2",
     "discord.js": "^14.7.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

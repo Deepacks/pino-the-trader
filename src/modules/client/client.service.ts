@@ -14,4 +14,8 @@ export class ClientService {
 
     this.discordClient.login(process.env['token']);
   }
+
+  async createEmbed() {
+    return 'create embed api';
+  }
 }
