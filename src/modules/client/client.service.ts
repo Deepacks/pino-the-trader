@@ -9,6 +9,7 @@ import {
   TextChannel,
   EmbedBuilder,
 } from 'discord.js';
+import { getEnvVar } from 'src/helpers/getEnvVar.helper';
 
 import * as sale from '../../commands/sale';
 
@@ -67,7 +68,7 @@ export class ClientService {
     this.discordClient.once(Events.ClientReady, (c) => {
       console.log(`Ready! Logged in as ${c.user.tag}`);
     });
-    this.discordClient.login(process.env['token']);
+    this.discordClient.login(getEnvVar('token'));
   }
 
   async createEmbed() {

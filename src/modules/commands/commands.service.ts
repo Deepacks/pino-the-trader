@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { REST, Routes } from 'discord.js';
+import { getEnvVar } from 'src/helpers/getEnvVar.helper';
 
 import * as sale from '../../commands/sale';
 
@@ -8,7 +9,7 @@ export class CommandsService {
   rest: REST;
 
   constructor() {
-    this.rest = new REST({ version: '10' }).setToken(process.env['token']);
+    this.rest = new REST({ version: '10' }).setToken(getEnvVar('token'));
   }
 
   async registerCommand() {
@@ -20,8 +21,8 @@ export class CommandsService {
 
     await this.rest.put(
       Routes.applicationGuildCommands(
-        process.env['clientId'],
-        process.env['guildId'],
+        getEnvVar('clientId'),
+        getEnvVar('guildId'),
       ),
       { body: commands },
     );
