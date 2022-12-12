@@ -2,26 +2,77 @@ import { Injectable } from '@nestjs/common';
 import {
   Client,
   Events,
+  Collection,
   GatewayIntentBits,
-  EmbedBuilder,
+  ChatInputCommandInteraction,
+  CacheType,
   TextChannel,
+  EmbedBuilder,
 } from 'discord.js';
+
+import * as sale from '../../commands/sale';
 
 @Injectable()
 export class ClientService {
   discordClient: Client<boolean>;
 
   constructor() {
-    this.discordClient = new Client({ intents: [GatewayIntentBits.Guilds] });
+    this.discordClient = new Client({
+      intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildIntegrations,
+      ],
+    });
 
+    // ----- commands -----
+    const commands = new Collection<string, object>();
+    commands.set(sale.data.name, sale);
+
+    this.discordClient['commands'] = commands;
+
+    this.discordClient.on(Events.InteractionCreate, async (interaction) => {
+      if (!interaction.isChatInputCommand()) return;
+
+      const command = interaction.client['commands'].get(
+        interaction.commandName,
+      ) as {
+        data: any;
+        execute: (
+          interaction: ChatInputCommandInteraction<CacheType>,
+        ) => Promise<void>;
+      };
+
+      if (!command) {
+        console.error(
+          `No command matching ${interaction.commandName} was found.`,
+        );
+        return;
+      }
+
+      try {
+        await command.execute(interaction);
+      } catch (error) {
+        console.error(error);
+        await interaction.reply({
+          content: 'There was an error while executing this command!',
+          ephemeral: true,
+        });
+      }
+    });
+
+    // ----- login -----
     this.discordClient.once(Events.ClientReady, (c) => {
       console.log(`Ready! Logged in as ${c.user.tag}`);
     });
-
     this.discordClient.login(process.env['token']);
   }
 
   async createEmbed() {
+    console.log(this.discordClient['commands']);
+
     const exampleEmbed = new EmbedBuilder()
       .setColor(0x0099ff)
       .setAuthor({ name: '50€' })
