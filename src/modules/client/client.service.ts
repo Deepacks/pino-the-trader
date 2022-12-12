@@ -72,11 +72,9 @@ export class ClientService {
   }
 
   async createEmbed() {
-    console.log(this.discordClient['commands']);
-
     const exampleEmbed = new EmbedBuilder()
       .setColor(0x0099ff)
-      .setAuthor({ name: '50€' })
+      .setAuthor({ name: `50€ - CREATE VIA EMBED API` })
       .setTitle('Trust GXT 711 Dominus')
       .setURL(
         'https://www.amazon.it/Trust-Scrivania-Gaming-Ottimali-Prestazioni/dp/B07H7VX718/ref=sr_1_9?__mk_it_IT=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=3UVJPQSQT27TC&keywords=scrivania+gaming&qid=1670791693&sprefi',
