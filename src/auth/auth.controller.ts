@@ -25,5 +25,7 @@ export class AuthController {
       res.status(401);
       return result.error;
     }
+
+    return result.user;
   }
 }

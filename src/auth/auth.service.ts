@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { getEnvVar } from 'src/helpers/getEnvVar.helper';
-import { User, UserDocument } from 'src/schemas/user.schema';
 import { request } from 'undici';
 import { URLSearchParams } from 'url';
+import { getEnvVar } from 'src/helpers/getEnvVar.helper';
+import { User, UserDocument } from 'src/schemas/user.schema';
 import { DiscordTokenDTO } from './dto/discordToken-dto.type';
+import { DiscordUserDTO } from './dto/discordUser-dto.type';
 
 @Injectable()
 export class AuthService {
@@ -28,8 +29,11 @@ export class AuthService {
   }: {
     error: string;
     code: string;
-  }): Promise<{ isSuccesful: boolean; token: string; error: string }> {
-    if (error) return { isSuccesful: false, token: '', error: error };
+  }): Promise<{
+    user: DiscordUserDTO | null;
+    error: string | null;
+  }> {
+    if (error) return { user: null, error: error };
 
     const oauthData = await this.exchangeToken(code);
 
@@ -38,9 +42,7 @@ export class AuthService {
       oauthData.access_token,
     );
 
-    console.log(userData);
-
-    return { isSuccesful: true, token: '', error: '' };
+    return { user: userData, error: null };
   }
 
   async exchangeToken(code: string): Promise<DiscordTokenDTO> {
@@ -65,7 +67,10 @@ export class AuthService {
     return tokenResponseData.body.json();
   }
 
-  async getDiscordUser(tokenType: string, access_token: string) {
+  async getDiscordUser(
+    tokenType: string,
+    access_token: string,
+  ): Promise<DiscordUserDTO> {
     const userResult = await request('https://discord.com/api/users/@me', {
       headers: {
         authorization: `${tokenType} ${access_token}`,
