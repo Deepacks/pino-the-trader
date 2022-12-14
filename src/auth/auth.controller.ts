@@ -21,6 +21,8 @@ export class AuthController {
   ) {
     const result = await this.authService.authCallback({ error, code });
 
+    console.log(result);
+
     if (result.error) {
       res.status(401);
       return result.error;
