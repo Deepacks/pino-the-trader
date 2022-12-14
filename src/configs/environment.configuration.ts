@@ -1,5 +1,4 @@
-import { DynamicModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-export const configureEnvModule: () => DynamicModule = () =>
+export const configureEnvModule = () =>
   ConfigModule.forRoot({ isGlobal: true });
