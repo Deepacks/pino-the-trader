@@ -30,6 +30,10 @@ jobs:
     needs: [build-push-docker-image]
 
     steps:
+      - uses: Saionaro/extract-package-version@v1.0.6
+        name: Extract version
+        id: extract_version
+
       - name: ssh update service
         uses: appleboy/ssh-action@master
         with:
@@ -38,6 +42,6 @@ jobs:
           key: ${{ secrets.KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            docker image pull deepacks/trade-enjoyer:latest
-            docker service update --image deepacks/trade-enjoyer:latest trade-enjoyer
+            docker image pull deepacks/trade-enjoyer:${{ steps.extract_version.outputs.version }}
+            docker service update --image deepacks/trade-enjoyer:${{ steps.extract_version.outputs.version }} trade-enjoyer
             docker image prune -f
