@@ -1,5 +1,6 @@
 import { Controller, Get, Query, Redirect, Res } from '@nestjs/common';
 import { Response } from 'express';
+
 import { getEnvVar } from 'src/helpers/getEnvVar.helper';
 import { AuthService } from './auth.service';
 
@@ -21,13 +22,13 @@ export class AuthController {
   ) {
     const result = await this.authService.authCallback({ error, code });
 
-    console.log(result);
-
     if (result.error) {
       res.status(401);
       return result.error;
     }
 
-    return result.user;
+    const { token, options } = result.jwt;
+
+    res.cookie('Bearer', token, options);
   }
 }

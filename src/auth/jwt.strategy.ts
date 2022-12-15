@@ -2,8 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
-import { AuthService } from './auth.service';
+
 import { getEnvVar } from 'src/helpers/getEnvVar.helper';
+import { AuthService } from './auth.service';
+import { TokenDTO } from './dto/token-dto.type';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -14,9 +16,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  //   public async validate(tokenDto: TokenDto): Promise<{ userId: string }> {
+  public async validate(tokenDto: TokenDTO): Promise<{ userId: string }> {
+    await this.authService.validateUser(tokenDto);
 
-  //   }
+    return {
+      userId: tokenDto.userId,
+    };
+  }
 
   public static extractJwt(req: Request): string | null {
     if (req.signedCookies && 'Bearer' in req.signedCookies) {

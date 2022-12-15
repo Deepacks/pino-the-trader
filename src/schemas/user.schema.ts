@@ -6,13 +6,16 @@ export class User {
   _id: Types.ObjectId;
 
   @Prop({ required: true })
+  discordId: string;
+
+  @Prop({ required: true })
   email: string;
 
   @Prop({ required: true })
-  name: string;
+  username: string;
 
   @Prop({ required: true })
-  username: string;
+  refreshToken: string;
 }
 
 export type UserDocument = User & Document;

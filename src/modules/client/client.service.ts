@@ -9,8 +9,8 @@ import {
   TextChannel,
   EmbedBuilder,
 } from 'discord.js';
-import { getEnvVar } from 'src/helpers/getEnvVar.helper';
 
+import { getEnvVar } from 'src/helpers/getEnvVar.helper';
 import * as sale from '../../commands/sale';
 import { EmbedDto } from './dto/embed-dto.type';
 
