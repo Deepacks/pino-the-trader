@@ -25,8 +25,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   public static extractJwt(req: Request): string | null {
-    if (req.signedCookies && 'Bearer' in req.signedCookies) {
-      return req.signedCookies.Bearer;
+    if (req.cookies && 'Bearer' in req.cookies) {
+      return req.cookies.Bearer;
     }
     return null;
   }

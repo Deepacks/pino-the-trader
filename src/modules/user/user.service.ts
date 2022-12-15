@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 
 import { User, UserDocument } from 'src/schemas/user.schema';
 import { DiscordUserDTO } from 'src/auth/dto/discordUser-dto.type';
+import { UserDTO } from './dto/user-dto.typ';
 
 @Injectable()
 export class UserService {
@@ -33,5 +34,14 @@ export class UserService {
     });
 
     return newUser;
+  }
+
+  async getUserData(userId: string): Promise<UserDTO> {
+    const { username, email } = await this.userModel.findById(userId, {
+      username: true,
+      email: true,
+    });
+
+    return { username, email };
   }
 }

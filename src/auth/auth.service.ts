@@ -24,6 +24,7 @@ export class AuthService {
     const { userId } = tokenDto;
 
     const user = await this.userService.findById(userId);
+
     if (!user) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
