@@ -55,6 +55,8 @@ export class AuthService {
 
     const oauthData = await this.discordTokenService.exchangeToken(code);
 
+    console.log(oauthData);
+
     const discordUser = await this.discordTokenService.getDiscordUser(
       oauthData.token_type,
       oauthData.access_token,
