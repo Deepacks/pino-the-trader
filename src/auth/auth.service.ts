@@ -60,6 +60,8 @@ export class AuthService {
       oauthData.access_token,
     );
 
+    console.log(discordUser);
+
     const userId = await this.authenticateUser({
       ...discordUser,
       refreshToken: oauthData.refresh_token,
