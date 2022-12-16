@@ -3,6 +3,7 @@ import { Response } from 'express';
 
 import { getEnvVar } from 'src/helpers/getEnvVar.helper';
 import { AuthService } from './auth.service';
+import { isDev } from 'src/helpers/isDev.helper';
 
 @Controller('/auth')
 export class AuthController {
@@ -30,5 +31,10 @@ export class AuthController {
     const { token, options } = result.jwt;
 
     res.cookie('Bearer', token, options);
+    res.redirect(
+      isDev()
+        ? 'http://localhost:3000/discord/webapp'
+        : 'https://www.streakcloud.app/discord/webapp',
+    );
   }
 }
