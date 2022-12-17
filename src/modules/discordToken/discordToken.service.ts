@@ -8,8 +8,6 @@ import { DiscordUserDTO } from 'src/auth/dto/discordUser-dto.type';
 @Injectable()
 export class DiscordTokenService {
   async exchangeToken(code: string): Promise<DiscordTokenDTO> {
-    console.log(getEnvVar('redirectUri'));
-
     const tokenResponseData = await request(
       'https://discord.com/api/oauth2/token',
       {
