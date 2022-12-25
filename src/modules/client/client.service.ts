@@ -73,11 +73,12 @@ export class ClientService {
   }
 
   async createEmbed(embedDto: EmbedDto) {
-    const { author, title, url, description, image, condition } = embedDto;
+    const { author, title, price, description, url, image, condition } =
+      embedDto;
 
     const exampleEmbed = new EmbedBuilder()
       .setColor(0x0099ff)
-      .setAuthor({ name: `50€ - ${author}` })
+      .setAuthor({ name: `${price}€ - ${author}` })
       .setTitle(title)
       .setURL(url)
       .setDescription(description)
