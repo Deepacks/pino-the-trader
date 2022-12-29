@@ -39,5 +39,5 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             docker image pull deepacks/trade-enjoyer:latest
-            docker service update --image deepacks/trade-enjoyer:latest trade-enjoyer
+            docker service update --image deepacks/trade-enjoyer:latest --with-registry-auth trade-enjoyer
             docker image prune -f
