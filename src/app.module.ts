@@ -6,6 +6,7 @@ import { configureMongooseModule } from './configs/mongoose.configuration';
 import { HttpLoggerMiddleware } from './middlewares/logger.middleware';
 import { ClientModule } from './modules/client/client.module';
 import { CommandsModule } from './modules/commands/commands.module';
+import { ListingModule } from './modules/listing/listing.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { CommandsModule } from './modules/commands/commands.module';
     configureMongooseModule(),
     AuthModule,
     ClientModule,
+    ListingModule,
     CommandsModule,
   ],
 })

@@ -1,18 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import {
-  Client,
-  Events,
-  Collection,
-  GatewayIntentBits,
-  ChatInputCommandInteraction,
-  CacheType,
-  TextChannel,
-  EmbedBuilder,
-} from 'discord.js';
+import { Client, Events, Collection, GatewayIntentBits } from 'discord.js';
 
 import { getEnvVar } from 'src/helpers/getEnvVar.helper';
-import * as sale from '../../commands/sale';
-import { EmbedDto } from './dto/embed-dto.type';
+import {
+  data as SaleCmdData,
+  execute as SaleCmdExecute,
+} from '../../commands/sale';
 
 @Injectable()
 export class ClientService {
@@ -29,72 +22,18 @@ export class ClientService {
       ],
     });
 
-    // ----- commands -----
+    // ----- add commands -----
     const commands = new Collection<string, object>();
-    commands.set(sale.data.name, sale);
-
-    this.discordClient['commands'] = commands;
-
-    this.discordClient.on(Events.InteractionCreate, async (interaction) => {
-      if (!interaction.isChatInputCommand()) return;
-
-      const command = interaction.client['commands'].get(
-        interaction.commandName,
-      ) as {
-        data: any;
-        execute: (
-          interaction: ChatInputCommandInteraction<CacheType>,
-        ) => Promise<void>;
-      };
-
-      if (!command) {
-        console.error(
-          `No command matching ${interaction.commandName} was found.`,
-        );
-        return;
-      }
-
-      try {
-        await command.execute(interaction);
-      } catch (error) {
-        console.error(error);
-        await interaction.reply({
-          content: 'There was an error while executing this command!',
-          ephemeral: true,
-        });
-      }
+    commands.set(SaleCmdData.name, {
+      data: SaleCmdData,
+      execute: SaleCmdExecute,
     });
+    this.discordClient['commands'] = commands;
 
     // ----- login -----
     this.discordClient.once(Events.ClientReady, (c) => {
       console.log(`Ready! Logged in as ${c.user.tag}`);
     });
     this.discordClient.login(getEnvVar('token'));
-  }
-
-  async createEmbed(embedDto: EmbedDto) {
-    const { author, title, price, description, url, image, condition } =
-      embedDto;
-
-    const exampleEmbed = new EmbedBuilder()
-      .setColor(0x0099ff)
-      .setAuthor({ name: `${price}€ - ${author}` })
-      .setTitle(title)
-      .setURL(url)
-      .setDescription(description)
-      .setImage(image)
-      .setTimestamp()
-      .setFooter({
-        text: condition,
-        iconURL: 'https://cdn-icons-png.flaticon.com/512/179/179452.png',
-      });
-
-    const marketplaceChannel = this.discordClient.channels.cache
-      .filter((ch) => ch instanceof TextChannel)
-      .find((ch) => (ch as TextChannel).name === 'marketplace') as TextChannel;
-
-    marketplaceChannel.send({ embeds: [exampleEmbed] });
-
-    return 'create embed api';
   }
 }

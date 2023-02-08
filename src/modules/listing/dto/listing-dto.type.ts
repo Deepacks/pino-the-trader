@@ -1,6 +1,6 @@
 import { Condition } from 'src/types/condition.type';
 
-export interface EmbedDto {
+export interface ListingDto {
   author: string;
   title: string;
   price: string;
