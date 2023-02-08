@@ -7,14 +7,14 @@ import {
   TextChannel,
 } from 'discord.js';
 
-import { ClientService } from '../client/client.service';
+import { DiscordClientService } from '../clients/discord/discordClient.service';
 import { ListingDto } from './dto/listing-dto.type';
 
 @Injectable()
 export class ListingService {
-  constructor(private clientService: ClientService) {
+  constructor(private discordClientService: DiscordClientService) {
     // ----- add command event handler -----
-    this.clientService.discordClient.on(
+    this.discordClientService.discordClient.on(
       Events.InteractionCreate,
       async (interaction) => {
         console.log('interaction', interaction);
@@ -67,9 +67,12 @@ export class ListingService {
         iconURL: 'https://cdn-icons-png.flaticon.com/512/179/179452.png',
       });
 
-    const marketplaceChannel = this.clientService.discordClient.channels.cache
-      .filter((ch) => ch instanceof TextChannel)
-      .find((ch) => (ch as TextChannel).name === 'marketplace') as TextChannel;
+    const marketplaceChannel =
+      this.discordClientService.discordClient.channels.cache
+        .filter((ch) => ch instanceof TextChannel)
+        .find(
+          (ch) => (ch as TextChannel).name === 'marketplace',
+        ) as TextChannel;
 
     marketplaceChannel.send({ embeds: [exampleListing] });
 

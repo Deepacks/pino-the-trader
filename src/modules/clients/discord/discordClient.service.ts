@@ -5,10 +5,10 @@ import { getEnvVar } from 'src/helpers/getEnvVar.helper';
 import {
   data as SaleCmdData,
   execute as SaleCmdExecute,
-} from '../../commands/sale';
+} from '../../../commands/sale';
 
 @Injectable()
-export class ClientService {
+export class DiscordClientService {
   discordClient: Client<boolean>;
 
   constructor() {

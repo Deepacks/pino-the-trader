@@ -4,7 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { configureEnvModule } from './configs/environment.configuration';
 import { configureMongooseModule } from './configs/mongoose.configuration';
 import { HttpLoggerMiddleware } from './middlewares/logger.middleware';
-import { ClientModule } from './modules/client/client.module';
+import { DiscordClientModule } from './modules/clients/discord/discordClient.module';
 import { CommandsModule } from './modules/commands/commands.module';
 import { ListingModule } from './modules/listing/listing.module';
 
@@ -13,7 +13,7 @@ import { ListingModule } from './modules/listing/listing.module';
     configureEnvModule(),
     configureMongooseModule(),
     AuthModule,
-    ClientModule,
+    DiscordClientModule,
     ListingModule,
     CommandsModule,
   ],
