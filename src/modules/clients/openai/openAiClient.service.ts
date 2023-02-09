@@ -12,8 +12,6 @@ export class OpenAiClientService {
       apiKey: getEnvVar('openAiApiKey'),
     });
 
-    console.log(getEnvVar('openAiApiKey'));
-
     this.openAiClient = new OpenAIApi(configuration);
   }
 }

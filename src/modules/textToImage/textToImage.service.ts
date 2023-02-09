@@ -23,12 +23,12 @@ export class TextToImageService {
         );
 
         try {
+          console.log('> image generation', prompt);
           const imageUrl = await this.promptToImageUrl(prompt);
-          console.log(imageUrl);
 
           await interaction.editReply(imageUrl);
         } catch (e) {
-          console.log(e.res);
+          console.log(e);
 
           await interaction.editReply('the image was not created');
         }
@@ -40,10 +40,8 @@ export class TextToImageService {
     const response = await this.openAiClientService.openAiClient.createImage({
       prompt: prompt,
       n: 1,
-      size: '1024x1024',
+      size: '256x256',
     });
-
-    console.log(response);
 
     const image_url = response.data.data[0].url;
 
