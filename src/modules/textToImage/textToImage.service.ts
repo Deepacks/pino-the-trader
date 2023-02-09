@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Events } from 'discord.js';
 
-import { OpenAiClientService } from '../clients/openai/openaiClient.service';
+import { OpenAiClientService } from '../clients/openai/openAiClient.service';
 import { DiscordClientService } from '../clients/discord/discordClient.service';
 
 @Injectable()

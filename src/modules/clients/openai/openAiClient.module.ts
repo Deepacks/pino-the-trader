@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { OpenAiClientService } from './openaiClient.service';
+import { OpenAiClientService } from './openAiClient.service';
 
 @Module({
   providers: [OpenAiClientService],
