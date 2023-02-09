@@ -24,6 +24,8 @@ export class TextToImageService {
 
         try {
           const imageUrl = await this.promptToImageUrl(prompt);
+          console.log(imageUrl);
+
           await interaction.editReply(imageUrl);
         } catch {
           await interaction.editReply('the image was not created');
@@ -38,6 +40,9 @@ export class TextToImageService {
       n: 1,
       size: '1024x1024',
     });
+
+    console.log(response);
+
     const image_url = response.data.data[0].url;
 
     return image_url;
