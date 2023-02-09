@@ -5,8 +5,10 @@ import { configureEnvModule } from './configs/environment.configuration';
 import { configureMongooseModule } from './configs/mongoose.configuration';
 import { HttpLoggerMiddleware } from './middlewares/logger.middleware';
 import { DiscordClientModule } from './modules/clients/discord/discordClient.module';
+import { OpenAiClientModule } from './modules/clients/openai/openAiClient.module';
 import { CommandsModule } from './modules/commands/commands.module';
 import { ListingModule } from './modules/listing/listing.module';
+import { TextToImageModule } from './modules/textToImage/textToImage.module';
 
 @Module({
   imports: [
@@ -14,8 +16,10 @@ import { ListingModule } from './modules/listing/listing.module';
     configureMongooseModule(),
     AuthModule,
     DiscordClientModule,
-    ListingModule,
+    OpenAiClientModule,
     CommandsModule,
+    TextToImageModule,
+    ListingModule,
   ],
 })
 export class AppModule {

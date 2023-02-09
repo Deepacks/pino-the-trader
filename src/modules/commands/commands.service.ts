@@ -3,6 +3,7 @@ import { REST, Routes } from 'discord.js';
 import { getEnvVar } from 'src/helpers/getEnvVar.helper';
 
 import * as sale from '../../commands/sale';
+import textToImage from '../../commands/textToImage';
 
 @Injectable()
 export class CommandsService {
@@ -13,7 +14,7 @@ export class CommandsService {
   }
 
   async registerCommand() {
-    const commands = [sale.data.toJSON()];
+    const commands = [sale.data.toJSON(), textToImage.toJSON()];
 
     console.log(
       `Started refreshing ${commands.length} application (/) commands.`,

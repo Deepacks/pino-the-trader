@@ -3,13 +3,13 @@ import { Client, Events, Collection, GatewayIntentBits } from 'discord.js';
 
 import { getEnvVar } from 'src/helpers/getEnvVar.helper';
 import {
-  data as SaleCmdData,
-  execute as SaleCmdExecute,
+  data as saleCmdData,
+  execute as saleCmdExecute,
 } from '../../../commands/sale';
 
 @Injectable()
 export class DiscordClientService {
-  discordClient: Client<boolean>;
+  public discordClient: Client<boolean>;
 
   constructor() {
     this.discordClient = new Client({
@@ -24,9 +24,9 @@ export class DiscordClientService {
 
     // ----- add commands -----
     const commands = new Collection<string, object>();
-    commands.set(SaleCmdData.name, {
-      data: SaleCmdData,
-      execute: SaleCmdExecute,
+    commands.set(saleCmdData.name, {
+      data: saleCmdData,
+      execute: saleCmdExecute,
     });
     this.discordClient['commands'] = commands;
 

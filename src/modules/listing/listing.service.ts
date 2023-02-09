@@ -14,11 +14,10 @@ import { ListingDto } from './dto/listing-dto.type';
 export class ListingService {
   constructor(private discordClientService: DiscordClientService) {
     // ----- add command event handler -----
+
     this.discordClientService.discordClient.on(
       Events.InteractionCreate,
       async (interaction) => {
-        console.log('interaction', interaction);
-
         if (!interaction.isChatInputCommand()) return;
 
         const command = interaction.client['commands'].get(
@@ -30,12 +29,7 @@ export class ListingService {
           ) => Promise<void>;
         };
 
-        if (!command) {
-          console.error(
-            `No command matching ${interaction.commandName} was found.`,
-          );
-          return;
-        }
+        if (!command) return;
 
         try {
           await command.execute(interaction);
