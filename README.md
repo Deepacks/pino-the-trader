@@ -1,4 +1,4 @@
-<h1 align="center">A Discord api to manage a marketplace</h1>
+<h1 align="center">A Discord api to interact with OpenAI API (+ more!)</h1>
 
 <p align="center">Made with <a href="http://nestjs.com/">Nest JS</a></p>
 
