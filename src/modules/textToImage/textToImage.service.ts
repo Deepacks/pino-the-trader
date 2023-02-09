@@ -28,7 +28,7 @@ export class TextToImageService {
 
           await interaction.editReply(imageUrl);
         } catch (e) {
-          console.log(e);
+          console.log(e.res);
 
           await interaction.editReply('the image was not created');
         }
