@@ -4,6 +4,7 @@ import { getEnvVar } from 'src/helpers/getEnvVar.helper';
 
 import sale from '../../commands/sale';
 import textToImage from '../../commands/textToImage';
+import ask from '../../commands/ask';
 
 @Injectable()
 export class CommandsService {
@@ -14,7 +15,7 @@ export class CommandsService {
   }
 
   async registerCommand() {
-    const commands = [sale.toJSON(), textToImage.toJSON()];
+    const commands = [sale.toJSON(), textToImage.toJSON(), ask.toJSON()];
 
     console.log(
       `Started refreshing ${commands.length} application (/) commands.`,

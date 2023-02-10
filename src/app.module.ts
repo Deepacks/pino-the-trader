@@ -9,6 +9,7 @@ import { OpenAiClientModule } from './modules/clients/openai/openAiClient.module
 import { CommandsModule } from './modules/commands/commands.module';
 import { MessageModule } from './modules/message/message.module';
 import { TextToImageModule } from './modules/textToImage/textToImage.module';
+import { ConversationModule } from './modules/conversation/conversation.module';
 import { ListingModule } from './modules/listing/listing.module';
 
 @Module({
@@ -21,6 +22,7 @@ import { ListingModule } from './modules/listing/listing.module';
     CommandsModule,
     MessageModule,
     TextToImageModule,
+    ConversationModule,
     ListingModule,
   ],
 })
