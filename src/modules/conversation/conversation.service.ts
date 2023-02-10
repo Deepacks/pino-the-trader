@@ -1,37 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { Events } from 'discord.js';
+import { CacheType, ChatInputCommandInteraction } from 'discord.js';
 
-import { DiscordClientService } from '../clients/discord/discordClient.service';
 import { OpenAiClientService } from '../clients/openai/openAiClient.service';
 
 @Injectable()
 export class ConversationService {
-  constructor(
-    private discordClientService: DiscordClientService,
-    private openAiClientService: OpenAiClientService,
+  constructor(private openAiClientService: OpenAiClientService) {}
+
+  async handleConversation(
+    interaction: ChatInputCommandInteraction<CacheType>,
   ) {
-    this.discordClientService.discordClient.on(
-      Events.InteractionCreate,
-      async (interaction) => {
-        if (!interaction.isChatInputCommand()) return;
+    const prompt = interaction.options.getString('text');
+    await interaction.reply(`I'm thinking...`);
 
-        console.log('here');
-
-        if (interaction.commandName !== 'ask') return;
-
-        const prompt = interaction.options.getString('text');
-        await interaction.reply(`I'm thinking...`);
-
-        try {
-          console.log('> message');
-          const answer = await this.getAnswer(prompt);
-          interaction.editReply(`Q: ${prompt}\nA: ${answer}`);
-        } catch (e) {
-          console.log(e);
-          interaction.editReply('There was an error :(');
-        }
-      },
-    );
+    try {
+      console.log('> message');
+      const answer = await this.getAnswer(prompt);
+      interaction.editReply(`Q: ${prompt}\nA: ${answer}`);
+    } catch (e) {
+      console.log(e);
+      interaction.editReply('There was an error :(');
+    }
   }
 
   async getAnswer(prompt: string) {
