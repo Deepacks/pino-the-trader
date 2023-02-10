@@ -1,11 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  CacheType,
-  ChatInputCommandInteraction,
-  EmbedBuilder,
-  Events,
-  TextChannel,
-} from 'discord.js';
+import { EmbedBuilder, Events, TextChannel } from 'discord.js';
 
 import { DiscordClientService } from '../clients/discord/discordClient.service';
 import { ListingDto } from './dto/listing-dto.type';
@@ -13,26 +7,31 @@ import { ListingDto } from './dto/listing-dto.type';
 @Injectable()
 export class ListingService {
   constructor(private discordClientService: DiscordClientService) {
-    // ----- add command event handler -----
-
     this.discordClientService.discordClient.on(
       Events.InteractionCreate,
       async (interaction) => {
         if (!interaction.isChatInputCommand()) return;
 
-        const command = interaction.client['commands'].get(
-          interaction.commandName,
-        ) as {
-          data: any;
-          execute: (
-            interaction: ChatInputCommandInteraction<CacheType>,
-          ) => Promise<void>;
-        };
-
-        if (!command) return;
+        if (interaction.commandName !== 'sale') return;
 
         try {
-          await command.execute(interaction);
+          console.log('> sale listing');
+          const embed = await this.createListing(
+            {
+              author: 'SkilledSoda',
+              title: 'Trust GXT 711 Dominus',
+              description:
+                'Tavolo da gaming 4k 60fps hdr1000 no-flicker g-sync a 3 livelli di potenza, con manopole riscaldate. Set di batterie non incluso',
+              image:
+                'https://m.media-amazon.com/images/I/81Jk1clmhlL._AC_SX679_.jpg',
+              price: '80',
+              url: 'https://www.amazon.it/Trust-Scrivania-Gaming-Ottimali-Prestazioni/dp/B07H7VX718/ref=sr_1_9?__mk_it_IT=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=3UVJPQSQT27TC&keywords=scrivania+gaming&qid=1670791693&sprefi',
+              condition: 'Come nuovo',
+            },
+            true,
+          );
+
+          interaction.reply({ embeds: [embed] });
         } catch (error) {
           console.error(error);
           await interaction.reply({
@@ -44,7 +43,7 @@ export class ListingService {
     );
   }
 
-  async createListing(listingDto: ListingDto) {
+  async createListing(listingDto: ListingDto, isCommand = false) {
     const { author, title, price, description, url, image, condition } =
       listingDto;
 
@@ -61,15 +60,17 @@ export class ListingService {
         iconURL: 'https://cdn-icons-png.flaticon.com/512/179/179452.png',
       });
 
-    const marketplaceChannel =
-      this.discordClientService.discordClient.channels.cache
-        .filter((ch) => ch instanceof TextChannel)
-        .find(
-          (ch) => (ch as TextChannel).name === 'marketplace',
-        ) as TextChannel;
+    if (!isCommand) {
+      const marketplaceChannel =
+        this.discordClientService.discordClient.channels.cache
+          .filter((ch) => ch instanceof TextChannel)
+          .find(
+            (ch) => (ch as TextChannel).name === 'marketplace',
+          ) as TextChannel;
 
-    marketplaceChannel.send({ embeds: [exampleListing] });
+      marketplaceChannel.send({ embeds: [exampleListing] });
+    }
 
-    return 'create embed api';
+    return exampleListing;
   }
 }

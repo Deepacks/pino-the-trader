@@ -7,8 +7,9 @@ import { HttpLoggerMiddleware } from './middlewares/logger.middleware';
 import { DiscordClientModule } from './modules/clients/discord/discordClient.module';
 import { OpenAiClientModule } from './modules/clients/openai/openAiClient.module';
 import { CommandsModule } from './modules/commands/commands.module';
-import { ListingModule } from './modules/listing/listing.module';
+import { MessageModule } from './modules/message/message.module';
 import { TextToImageModule } from './modules/textToImage/textToImage.module';
+import { ListingModule } from './modules/listing/listing.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { TextToImageModule } from './modules/textToImage/textToImage.module';
     DiscordClientModule,
     OpenAiClientModule,
     CommandsModule,
+    MessageModule,
     TextToImageModule,
     ListingModule,
   ],

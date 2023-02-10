@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { REST, Routes } from 'discord.js';
 import { getEnvVar } from 'src/helpers/getEnvVar.helper';
 
-import * as sale from '../../commands/sale';
+import sale from '../../commands/sale';
 import textToImage from '../../commands/textToImage';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class CommandsService {
   }
 
   async registerCommand() {
-    const commands = [sale.data.toJSON(), textToImage.toJSON()];
+    const commands = [sale.toJSON(), textToImage.toJSON()];
 
     console.log(
       `Started refreshing ${commands.length} application (/) commands.`,
