@@ -8,5 +8,6 @@ import { ListingService } from './listing.service';
   imports: [DiscordClientModule],
   controllers: [ListingController],
   providers: [ListingService],
+  exports: [ListingService],
 })
 export class ListingModule {}
