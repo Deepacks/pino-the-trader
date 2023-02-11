@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Events, REST, Routes } from 'discord.js';
+import { Events, REST, Routes, TextChannel } from 'discord.js';
 import { getEnvVar } from 'src/helpers/getEnvVar.helper';
 
 import sale from '../../commands/sale';
@@ -39,6 +39,34 @@ export class CommandsService {
 
         if (interaction.commandName === 'sale') {
           this.listingService.handleCreateSale(interaction);
+        }
+      },
+    );
+
+    // ----- listen for replies -----
+    this.discordClientService.discordClient.on(
+      Events.MessageCreate,
+      async (message) => {
+        if (!message.reference || message.author.bot) return;
+
+        const channel =
+          (await this.discordClientService.discordClient.channels.fetch(
+            message.reference.channelId,
+          )) as TextChannel;
+
+        const repliedMessage = await channel.messages.fetch(
+          message.reference.messageId,
+        );
+
+        if (repliedMessage.interaction) {
+          const repliedMessageContent = repliedMessage.content;
+
+          const reply = await this.conversationService.handleReply(
+            repliedMessageContent,
+            message.content,
+          );
+
+          message.reply(reply);
         }
       },
     );
