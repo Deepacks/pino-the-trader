@@ -1,39 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { Events } from 'discord.js';
+import { CacheType, ChatInputCommandInteraction } from 'discord.js';
 
 import { OpenAiClientService } from '../clients/openai/openAiClient.service';
-import { DiscordClientService } from '../clients/discord/discordClient.service';
 
 @Injectable()
 export class TextToImageService {
-  constructor(
-    private openAiClientService: OpenAiClientService,
-    private discordClientService: DiscordClientService,
-  ) {
-    this.discordClientService.discordClient.on(
-      Events.InteractionCreate,
-      async (interaction) => {
-        if (!interaction.isChatInputCommand()) return;
+  constructor(private openAiClientService: OpenAiClientService) {}
 
-        if (interaction.commandName !== 'text-to-image') return;
+  async handleTextToImage(interaction: ChatInputCommandInteraction<CacheType>) {
+    const prompt = interaction.options.getString('text');
+    await interaction.reply(`Generating url for: ${prompt}, please wait...`);
 
-        const prompt = interaction.options.getString('text');
-        await interaction.reply(
-          `Generating url for: ${prompt}, please wait...`,
-        );
+    try {
+      console.log('> image generation', prompt);
+      const imageUrl = await this.promptToImageUrl(prompt);
 
-        try {
-          console.log('> image generation', prompt);
-          const imageUrl = await this.promptToImageUrl(prompt);
+      await interaction.editReply(imageUrl);
+    } catch (e) {
+      console.log(e);
 
-          await interaction.editReply(imageUrl);
-        } catch (e) {
-          console.log(e);
-
-          await interaction.editReply('the image was not created');
-        }
-      },
-    );
+      await interaction.editReply('the image was not created');
+    }
   }
 
   async promptToImageUrl(prompt: string) {

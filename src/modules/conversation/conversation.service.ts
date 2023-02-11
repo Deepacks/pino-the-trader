@@ -16,7 +16,7 @@ export class ConversationService {
     try {
       console.log('> message');
       const answer = await this.getAnswer(prompt);
-      interaction.editReply(`Q: ${prompt}\nA: ${answer}`);
+      interaction.editReply(`Q: ${prompt}\nA:${answer}`);
     } catch (e) {
       console.log(e);
       interaction.editReply('There was an error :(');
