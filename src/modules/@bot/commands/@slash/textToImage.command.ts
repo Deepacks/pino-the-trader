@@ -8,7 +8,7 @@ import {
 import { ClientEvents } from 'discord.js';
 
 import { commandsData } from '../../data/commands.data';
-import { TextToImageDto } from 'src/modules/@ai/Image/dto/textToImage.dto';
+import { TextToImageDto } from 'src/modules/@ai/image/dto/textToImage.dto';
 import { ImageService } from 'src/modules/@ai/image/image.service';
 
 @Command({
