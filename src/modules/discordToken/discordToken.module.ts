@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { DiscordTokenService } from './discordToken.service';
 
 @Module({
