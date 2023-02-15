@@ -1,7 +1,7 @@
 import { DiscordModule } from '@discord-nestjs/core';
 import { Module } from '@nestjs/common';
 
-import { ImageModule } from 'src/modules/@ai/image/Image.module';
+import { ImageModule } from 'src/modules/@ai/image/image.module';
 import { ConversationModule } from 'src/modules/@ai/conversation/conversation.module';
 import { CommandsController } from './botCommands.controller';
 import { BotCommandsService } from './botCommands.service';
