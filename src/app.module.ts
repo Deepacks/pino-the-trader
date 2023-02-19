@@ -13,16 +13,12 @@ import { BotModule } from './modules/@bot/bot.module';
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRootAsync({
-      useFactory: () => {
-        console.log(getEnvVar('mongo_host'), getEnvVar('mongo_user'));
-
-        return {
-          uri: `mongodb://${getEnvVar('mongo_host')}:27017/discord`,
-          authSource: 'discord',
-          user: getEnvVar('mongo_user'),
-          pass: getEnvVar('mongo_pass'),
-        };
-      },
+      useFactory: () => ({
+        uri: `mongodb://${getEnvVar('mongo_host')}:27017/discord`,
+        authSource: 'discord',
+        user: getEnvVar('mongo_user'),
+        pass: getEnvVar('mongo_pass'),
+      }),
     }),
 
     DiscordModule.forRootAsync({
