@@ -8,7 +8,7 @@ async function bootstrap() {
 
   app.enableCors({
     credentials: true,
-    origin: isDev() ? 'http://localhost:3000' : 'https://www.streakcloud.app',
+    origin: isDev() ? 'http://localhost:3000' : 'https://vlad-hub.com',
   });
 
   app.setGlobalPrefix('discord/api');

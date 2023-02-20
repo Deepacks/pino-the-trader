@@ -20,7 +20,6 @@ import { BotModule } from './modules/@bot/bot.module';
         pass: getEnvVar('mongo_pass'),
       }),
     }),
-
     DiscordModule.forRootAsync({
       useFactory: () => {
         return {
