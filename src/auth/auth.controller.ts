@@ -18,6 +18,7 @@ export class AuthController {
   async authCallback(
     @Query('error') error: string,
     @Query('code') code: string,
+    @Query('state') state: string,
     @Res({ passthrough: true }) res: Response,
   ) {
     const result = await this.authService.authCallback({ error, code });
@@ -27,13 +28,16 @@ export class AuthController {
       return result.error;
     }
 
+    let requestedRoute = '';
+    if (state) requestedRoute = Buffer.from(state, 'base64').toString('ascii');
+
     const { token, options } = result.jwt;
 
     res.cookie('Bearer', token, options);
     res.redirect(
       isDev()
-        ? 'http://localhost:3000/discord/webapp'
-        : 'https://vlad-hub.com/discord/webapp',
+        ? `http://localhost:3000/discord/webapp${requestedRoute}`
+        : `https://vlad-hub.com/discord/webapp${requestedRoute}`,
     );
   }
 }
