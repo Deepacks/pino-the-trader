@@ -40,4 +40,5 @@ jobs:
           script: |
             docker image pull deepacks/trade-enjoyer:latest
             docker service update --image deepacks/trade-enjoyer:latest --with-registry-auth trade-enjoyer
+            docker container prune -f
             docker image prune -f
