@@ -1,9 +1,11 @@
-import { Controller, Get, Query, Res } from '@nestjs/common';
+import { Controller, Get, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 
 import { getEnvVar } from 'src/helpers/getEnvVar.helper';
 import { AuthService } from './auth.service';
 import { isDev } from 'src/helpers/isDev.helper';
+import { AuthGuard } from '@nestjs/passport';
+import { GuardedGoogleRequest } from 'src/types/guardedRequest.type';
 
 @Controller('/auth')
 export class AuthController {
@@ -38,6 +40,30 @@ export class AuthController {
       isDev()
         ? `http://localhost:3000/discord/webapp${requestedRoute}`
         : `https://vlad-hub.com/discord/webapp${requestedRoute}`,
+    );
+  }
+
+  @Get('/google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth() {
+    return;
+  }
+
+  @Get('/google/redirect')
+  @UseGuards(AuthGuard('google'))
+  async googleRedirect(
+    @Req() req: GuardedGoogleRequest,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const result = await this.authService.googleRedirect(req.user);
+
+    const { token, options } = result;
+
+    res.cookie('Bearer', token, options);
+    res.redirect(
+      isDev()
+        ? `http://localhost:3000/discord/webapp/spotlight/text-to-image`
+        : `https://vlad-hub.com/discord/webapp/spotlight/text-to-image`,
     );
   }
 }

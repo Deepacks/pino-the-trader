@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 
 import { User, UserDocument } from 'src/schemas/user.schema';
 import { DiscordUserDTO } from 'src/auth/dto/discordUser-dto.type';
+import { GoogleUserDTO } from 'src/auth/dto/googleUser-dto.type';
 import { UserDTO } from './dto/user-dto.typ';
 
 @Injectable()
@@ -17,30 +18,63 @@ export class UserService {
     return this.userModel.findById(userId);
   }
 
+  async findByEmail(email: string): Promise<UserDocument> {
+    return this.userModel.findOne({ email });
+  }
+
   async findByDiscordId(discordId: string): Promise<UserDocument> {
     return this.userModel.findOne({ discordId });
   }
 
-  async registerUser(
-    discordUser: DiscordUserDTO & { refreshToken: string },
-  ): Promise<UserDocument> {
-    const { id: discordId, email, username, refreshToken } = discordUser;
+  async findByGoogleId(googleId: string): Promise<UserDocument> {
+    return this.userModel.findOne({ googleId });
+  }
 
-    const newUser = await this.userModel.create({
+  async updateUser(
+    userId: string,
+    userUpdate: Partial<User>,
+  ): Promise<UserDocument> {
+    const updateResult = await this.userModel.findOneAndUpdate(
+      { _id: userId },
+      { ...userUpdate },
+      { returnDocument: 'after' },
+    );
+
+    return updateResult;
+  }
+
+  async registerUserFromDiscord(
+    discordUser: DiscordUserDTO & { discordRefreshToken: string },
+  ): Promise<UserDocument> {
+    const { id: discordId, email, username, discordRefreshToken } = discordUser;
+
+    return this.userModel.create({
       discordId,
       email,
-      username,
-      refreshToken,
+      discordUsername: username,
+      discordRefreshToken,
     });
+  }
 
-    return newUser;
+  async registerUserFromGoogle(
+    googleUser: GoogleUserDTO,
+  ): Promise<UserDocument> {
+    const { googleId, email } = googleUser;
+
+    return this.userModel.create({
+      googleId,
+      email,
+    });
   }
 
   async getUserData(userId: string): Promise<UserDTO> {
-    const { username, email } = await this.userModel.findById(userId, {
-      username: true,
-      email: true,
-    });
+    const { discordUsername: username, email } = await this.userModel.findById(
+      userId,
+      {
+        discordUsername: true,
+        email: true,
+      },
+    );
 
     return { username, email };
   }

@@ -4,11 +4,11 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
 
 import { getEnvVar } from 'src/helpers/getEnvVar.helper';
-import { AuthService } from './auth.service';
-import { TokenDTO } from './dto/token-dto.type';
+import { AuthService } from '../auth.service';
+import { TokenDTO } from '../dto/token-dto.type';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(private readonly authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([JwtStrategy.extractJwt]),

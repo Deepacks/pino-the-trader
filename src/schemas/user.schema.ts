@@ -5,17 +5,20 @@ import { Document, Types } from 'mongoose';
 export class User {
   _id: Types.ObjectId;
 
-  @Prop({ required: true })
-  discordId: string;
-
-  @Prop({ required: true })
+  @Prop({ default: null })
   email: string;
 
-  @Prop({ required: true })
-  username: string;
+  @Prop({ default: null })
+  discordId: string;
 
-  @Prop({ required: true })
-  refreshToken: string;
+  @Prop({ default: null })
+  discordUsername: string;
+
+  @Prop({ default: null })
+  discordRefreshToken: string;
+
+  @Prop({ default: null })
+  googleId: string;
 }
 
 export type UserDocument = User & Document;

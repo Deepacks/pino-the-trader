@@ -6,8 +6,9 @@ import { DiscordTokenModule } from 'src/modules/discordToken/discordToken.module
 import { UserModule } from 'src/modules/user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { JwtStrategy } from './jwt.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 import { getEnvVar } from 'src/helpers/getEnvVar.helper';
+import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({
   imports: [
@@ -26,6 +27,6 @@ import { getEnvVar } from 'src/helpers/getEnvVar.helper';
     DiscordTokenModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, GoogleStrategy],
 })
 export class AuthModule {}
