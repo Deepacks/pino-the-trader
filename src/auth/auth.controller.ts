@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Redirect, Res } from '@nestjs/common';
+import { Controller, Get, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
 
 import { getEnvVar } from 'src/helpers/getEnvVar.helper';
@@ -10,9 +10,8 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Get('/oauth2')
-  @Redirect()
   async oauth2() {
-    return { url: getEnvVar('OAuth2Url') };
+    return getEnvVar('OAuth2Url');
   }
 
   @Get('/callback')
@@ -34,7 +33,7 @@ export class AuthController {
     res.redirect(
       isDev()
         ? 'http://localhost:3000/discord/webapp'
-        : 'https://www.streakcloud.app/discord/webapp',
+        : 'https://vlad-hub.com/discord/webapp',
     );
   }
 }
