@@ -62,8 +62,8 @@ export class AuthController {
     res.cookie('Bearer', token, options);
     res.redirect(
       isDev()
-        ? `http://localhost:3000/discord/webapp/spotlight/text-to-image`
-        : `https://vlad-hub.com/discord/webapp/spotlight/text-to-image`,
+        ? `http://localhost:3000/discord/webapp/auth/google`
+        : `https://vlad-hub.com/discord/webapp/auth/google`,
     );
   }
 }

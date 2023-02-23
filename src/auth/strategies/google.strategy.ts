@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-google-oauth20';
+
 import { getEnvVar } from 'src/helpers/getEnvVar.helper';
 import { isDev } from 'src/helpers/isDev.helper';
 import { GoogleUserDTO } from '../dto/googleUser-dto.type';
