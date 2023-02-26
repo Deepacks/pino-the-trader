@@ -9,6 +9,12 @@ export class User {
   email: string;
 
   @Prop({ default: null })
+  firstName: string;
+
+  @Prop({ default: null })
+  lastName: string;
+
+  @Prop({ default: null })
   discordId: string;
 
   @Prop({ default: null })
@@ -19,6 +25,12 @@ export class User {
 
   @Prop({ default: null })
   googleId: string;
+
+  @Prop({ default: null })
+  googleAccessToken: string;
+
+  @Prop({ default: null })
+  googleRefreshToken: string;
 }
 
 export type UserDocument = User & Document;

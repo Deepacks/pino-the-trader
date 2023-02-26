@@ -59,23 +59,33 @@ export class UserService {
   async registerUserFromGoogle(
     googleUser: GoogleUserDTO,
   ): Promise<UserDocument> {
-    const { googleId, email } = googleUser;
+    const {
+      googleId,
+      email,
+      firstName,
+      lastName,
+      googleAccessToken,
+      googleRefreshToken,
+    } = googleUser;
 
     return this.userModel.create({
       googleId,
       email,
+      firstName,
+      lastName,
+      googleAccessToken,
+      googleRefreshToken,
     });
   }
 
   async getUserData(userId: string): Promise<UserDTO> {
-    const { discordUsername: username, email } = await this.userModel.findById(
-      userId,
-      {
-        discordUsername: true,
-        email: true,
-      },
-    );
+    const userData = await this.userModel.findById(userId, {
+      _id: false,
+      email: true,
+      firstName: true,
+      discordUsername: true,
+    });
 
-    return { username, email };
+    return userData;
   }
 }
