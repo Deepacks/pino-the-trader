@@ -9,14 +9,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.3.0
         name: Check out code
 
-      - uses: Saionaro/extract-package-version@v1.1.1
+      - uses: Saionaro/extract-package-version@v1.2.1
         name: Extract version
         id: extract_version
 
-      - uses: mr-smithers-excellent/docker-build-push@v5.8
+      - uses: mr-smithers-excellent/docker-build-push@v5.9
         name: Build & Push Docker Image
         with:
           image: deepacks/trade-enjoyer
@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: ssh update service
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
