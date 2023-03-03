@@ -106,8 +106,20 @@ export class AuthService {
 
     if (user) {
       if (!user.googleId) {
+        const {
+          googleId,
+          firstName,
+          lastName,
+          googleAccessToken,
+          googleRefreshToken,
+        } = googleUser;
+
         await this.userService.updateUser(user._id, {
-          googleId: googleUser.googleId,
+          googleId,
+          firstName,
+          lastName,
+          googleAccessToken,
+          googleRefreshToken,
         });
       }
 
