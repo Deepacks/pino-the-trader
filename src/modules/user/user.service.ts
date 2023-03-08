@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { User, UserDocument } from 'src/schemas/user.schema';
+import { AnalyticsService } from '../analytics/analytics.service';
 import { DiscordUserDTO } from 'src/auth/dto/discordUser-dto.type';
 import { GoogleUserDTO } from 'src/auth/dto/googleUser-dto.type';
 import { UserDTO } from './dto/user-dto.typ';
@@ -11,7 +12,8 @@ import { UserDTO } from './dto/user-dto.typ';
 export class UserService {
   constructor(
     @InjectModel(User.name)
-    private userModel: Model<UserDocument>,
+    private readonly userModel: Model<UserDocument>,
+    private readonly analyticsService: AnalyticsService,
   ) {}
 
   async findById(userId: string): Promise<UserDocument> {
@@ -48,12 +50,16 @@ export class UserService {
   ): Promise<UserDocument> {
     const { id: discordId, email, username, discordRefreshToken } = discordUser;
 
-    return this.userModel.create({
+    const newUser = await this.userModel.create({
       discordId,
       email,
       discordUsername: username,
       discordRefreshToken,
     });
+
+    await this.analyticsService.createAnalytics(newUser._id);
+
+    return newUser;
   }
 
   async registerUserFromGoogle(
@@ -68,7 +74,7 @@ export class UserService {
       googleRefreshToken,
     } = googleUser;
 
-    return this.userModel.create({
+    const newUser = await this.userModel.create({
       googleId,
       email,
       firstName,
@@ -76,6 +82,10 @@ export class UserService {
       googleAccessToken,
       googleRefreshToken,
     });
+
+    await this.analyticsService.createAnalytics(newUser._id);
+
+    return newUser;
   }
 
   async getUserData(userId: string): Promise<UserDTO> {
