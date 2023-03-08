@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document, SchemaTypes, Types } from 'mongoose';
 
 @Schema()
@@ -10,6 +10,12 @@ export class Analytics {
 
   @Prop({ required: true })
   lastLogin: Date;
+
+  @Prop({
+    type: raw({ textToImageInteractions: Number, askInteraction: Number }),
+    default: { textToImageInteractions: 0, askInteraction: 0 },
+  })
+  openAiData: { textToImageInteractions: number; askInteraction: number };
 }
 
 export type AnalyticsDocument = Analytics & Document;

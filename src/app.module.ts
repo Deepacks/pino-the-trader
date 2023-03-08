@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { getEnvVar } from './helpers/getEnvVar.helper';
 import { OpenAiModule } from './modules/@ai/OpenAi.module';
 import { AuthModule } from './auth/auth.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
 // import { BotModule } from './modules/@bot/bot.module';
 
 @Module({
@@ -45,6 +46,7 @@ import { AuthModule } from './auth/auth.module';
     // }),
 
     OpenAiModule.create({ apiKey: getEnvVar('openAiApiKey') }),
+    AnalyticsModule,
 
     AuthModule,
     // BotModule,

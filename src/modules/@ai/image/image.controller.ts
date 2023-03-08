@@ -1,7 +1,8 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
 
 import { ImageService } from './image.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { GuardedRequest } from 'src/types/guardedRequest.type';
 
 @Controller('/openai/image')
 export class ImageController {
@@ -9,7 +10,14 @@ export class ImageController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getImageGeneration(@Query('prompt') prompt: string) {
-    return this.imageService.generateImage(prompt, '512x512');
+  async getImageGeneration(
+    @Query('prompt') prompt: string,
+    @Req() req: GuardedRequest,
+  ) {
+    return this.imageService.generateImage(
+      { userId: req.user.userId },
+      prompt,
+      '512x512',
+    );
   }
 }

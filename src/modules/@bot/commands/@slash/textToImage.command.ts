@@ -26,7 +26,10 @@ export class TextToImageCommand {
     if (!interaction.isRepliable()) return 'Bad request';
     await interaction.reply(`Generating image for: ${text}`);
 
-    const imageUrl = await this.imageService.generateImage(text);
+    const imageUrl = await this.imageService.generateImage(
+      { discordId: interaction.user.id },
+      text,
+    );
     await interaction.editReply(imageUrl);
   }
 }
