@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { CreateImageRequest } from 'openai';
 
 import { OpenAiService } from '../OpenAi.service';
 
@@ -6,12 +7,17 @@ import { OpenAiService } from '../OpenAi.service';
 export class ImageService {
   constructor(private openAiService: OpenAiService) {}
 
-  async generateImage(prompt: string): Promise<string> {
+  async generateImage(
+    prompt: string,
+    size: CreateImageRequest['size'] = '256x256',
+  ): Promise<string> {
+    if (!prompt) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+
     try {
       const response = await this.openAiService.openAiApi.createImage({
-        prompt: prompt,
+        prompt,
         n: 1,
-        size: '256x256',
+        size,
       });
 
       return response.data.data[0].url;
