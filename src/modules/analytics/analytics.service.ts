@@ -14,4 +14,10 @@ export class AnalyticsService {
   async createAnalytics(userId: Types.ObjectId) {
     await this.analyticsModel.create({ user: userId, lastLogin: new Date() });
   }
+
+  async updateLastLogin(userId: Types.ObjectId) {
+    await this.analyticsModel.findByIdAndUpdate(userId, {
+      lastLogin: new Date(),
+    });
+  }
 }

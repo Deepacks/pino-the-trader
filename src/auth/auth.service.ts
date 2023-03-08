@@ -8,13 +8,15 @@ import { DiscordTokenService } from 'src/modules/discordToken/discordToken.servi
 import { DiscordUserDTO } from './dto/discordUser-dto.type';
 import { TokenDTO } from './dto/token-dto.type';
 import { GoogleUserDTO } from './dto/googleUser-dto.type';
+import { AnalyticsService } from 'src/modules/analytics/analytics.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private jwtService: JwtService,
-    private userService: UserService,
-    private discordTokenService: DiscordTokenService,
+    private readonly jwtService: JwtService,
+    private readonly analyticsService: AnalyticsService,
+    private readonly userService: UserService,
+    private readonly discordTokenService: DiscordTokenService,
   ) {}
 
   async signJwt(userId: string): Promise<string> {
@@ -45,6 +47,8 @@ export class AuthService {
     } = discordUser;
 
     if (user) {
+      await this.analyticsService.updateLastLogin(user._id);
+
       if (!user.discordId) {
         await this.userService.updateUser(user._id, {
           discordId,
@@ -105,6 +109,8 @@ export class AuthService {
     const user = await this.userService.findByEmail(googleUser.email);
 
     if (user) {
+      await this.analyticsService.updateLastLogin(user._id);
+
       if (!user.googleId) {
         const {
           googleId,
