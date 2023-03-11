@@ -5,6 +5,9 @@ import { Document, Types } from 'mongoose';
 export class User {
   _id: Types.ObjectId;
 
+  @Prop({ default: false })
+  admin: boolean;
+
   @Prop({ default: null })
   email: string;
 
