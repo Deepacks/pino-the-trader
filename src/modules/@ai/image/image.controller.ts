@@ -11,8 +11,8 @@ export class ImageController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async getImageGeneration(
-    @Query('prompt') prompt: string,
     @Req() req: GuardedRequest,
+    @Query('prompt') prompt: string,
   ) {
     return this.imageService.generateImage(
       { userId: req.user.userId },

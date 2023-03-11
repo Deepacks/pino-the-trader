@@ -26,7 +26,10 @@ export class AskCommand {
     if (!interaction.isRepliable()) return 'Bad request';
     interaction.reply("I'm thinking...");
 
-    const answer = await this.conversationService.generateAnswer(text);
+    const answer = await this.conversationService.generateAnswer(
+      { discordId: interaction.user.id },
+      text,
+    );
     interaction.editReply(`Q: ${text}\nA:${answer}`);
   }
 }

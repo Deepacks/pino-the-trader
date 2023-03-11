@@ -47,7 +47,7 @@ export class AuthService {
     } = discordUser;
 
     if (user) {
-      await this.analyticsService.updateLastLogin(user._id);
+      await this.analyticsService.updateDiscordId(user._id, discordId);
 
       if (!user.discordId) {
         await this.userService.updateUser(user._id, {
@@ -140,8 +140,6 @@ export class AuthService {
     token: string;
     options: CookieOptions | null;
   }> {
-    await this.authenticateGoogleUser(googleUserDTO);
-
     const userId = await this.authenticateGoogleUser(googleUserDTO);
 
     const jwt = await this.signJwt(userId);

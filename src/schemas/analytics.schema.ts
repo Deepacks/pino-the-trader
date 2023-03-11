@@ -8,6 +8,9 @@ export class Analytics {
   @Prop({ type: SchemaTypes.ObjectId, required: true })
   user: Types.ObjectId;
 
+  @Prop({ default: null })
+  discordId: string;
+
   @Prop({ required: true })
   lastLogin: Date;
 

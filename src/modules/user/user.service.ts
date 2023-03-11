@@ -57,7 +57,7 @@ export class UserService {
       discordRefreshToken,
     });
 
-    await this.analyticsService.createAnalytics(newUser._id);
+    await this.analyticsService.createAnalytics(newUser._id, discordId);
 
     return newUser;
   }

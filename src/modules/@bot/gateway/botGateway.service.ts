@@ -46,7 +46,10 @@ export class BotGatewayService {
     });
     prompt = prompt = `${prompt}\nYou: ${message.content}`;
 
-    const reply = await this.conversationService.generateAnswer(prompt);
+    const reply = await this.conversationService.generateAnswer(
+      { discordId: message.author.id },
+      prompt,
+    );
     await message.reply(reply);
   }
 

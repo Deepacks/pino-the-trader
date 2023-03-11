@@ -12,8 +12,10 @@ export class AnalyticsController {
   @UseGuards(JwtAuthGuard)
   @Get('create')
   async testAnalyticsCreate(@Req() req: GuardedRequest) {
+    // FIXME: if testing, add discordId
     await this.analyticsService.createAnalytics(
       new Types.ObjectId(req.user.userId),
+      '',
     );
   }
 }

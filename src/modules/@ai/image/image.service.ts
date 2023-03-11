@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateImageRequest } from 'openai';
 import { Types } from 'mongoose';
 
+import { getEnvVar } from 'src/helpers/getEnvVar.helper';
 import { OpenAiService } from '../OpenAi.service';
 import { AnalyticsService } from 'src/modules/analytics/analytics.service';
 
@@ -16,14 +17,21 @@ export class ImageService {
     { userId, discordId }: { userId?: string; discordId?: string },
     prompt: string,
     size: CreateImageRequest['size'] = '256x256',
-  ): Promise<string> {
-    if (!prompt) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+  ): Promise<string | null> {
+    if (!prompt || prompt.length < 1) {
+      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    }
 
-    await this.analyticsService.registerInteraction(
-      new Types.ObjectId(discordId ?? userId),
+    const analyticsResult = await this.analyticsService.registerInteraction(
+      discordId ?? new Types.ObjectId(userId),
       'text-to-image',
       !!discordId,
     );
+
+    if (!analyticsResult)
+      return `Per favore, registrati su ${getEnvVar(
+        'client',
+      )}/discord/webapp/auth/discord`;
 
     try {
       const response = await this.openAiService.openAiApi.createImage({
