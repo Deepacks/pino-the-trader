@@ -28,10 +28,11 @@ export class ImageService {
       !!discordId,
     );
 
-    if (!analyticsResult)
+    if (!analyticsResult) {
       return `Per favore, registrati su ${getEnvVar(
         'client',
       )}/discord/webapp/auth/discord`;
+    }
 
     try {
       const response = await this.openAiService.openAiApi.createImage({

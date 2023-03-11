@@ -24,12 +24,17 @@ export class AskCommand {
     @EventParams() [interaction]: ClientEvents['interactionCreate'],
   ) {
     if (!interaction.isRepliable()) return 'Bad request';
-    interaction.reply("I'm thinking...");
+
+    await interaction.reply("I'm thinking...");
 
     const answer = await this.conversationService.generateAnswer(
       { discordId: interaction.user.id },
       text,
     );
-    interaction.editReply(`Q: ${text}\nA:${answer}`);
+    interaction.editReply(
+      answer.startsWith('Per favore, registrati su')
+        ? answer
+        : `Q: ${text}\nA:${answer}`,
+    );
   }
 }
