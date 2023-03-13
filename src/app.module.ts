@@ -6,8 +6,8 @@ import { GatewayIntentBits } from 'discord.js';
 
 import { getEnvVar } from './helpers/getEnvVar.helper';
 import { OpenAiModule } from './modules/@ai/OpenAi.module';
-import { AuthModule } from './auth/auth.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { AuthModule } from './auth/auth.module';
 import { BotModule } from './modules/@bot/bot.module';
 
 @Module({
@@ -46,7 +46,7 @@ import { BotModule } from './modules/@bot/bot.module';
     }),
 
     OpenAiModule.create({ apiKey: getEnvVar('openAiApiKey') }),
-    AnalyticsModule,
+    AnalyticsModule.create(),
 
     AuthModule,
     BotModule,

@@ -31,6 +31,8 @@ export class AuthService {
     if (!user) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
+
+    return user;
   }
 
   // ----- DISCORD -----

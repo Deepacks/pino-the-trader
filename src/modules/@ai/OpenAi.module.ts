@@ -3,13 +3,14 @@ import { ConfigurationParameters } from 'openai';
 
 import { OpenAiService } from './OpenAi.service';
 import { ImageModule } from './image/image.module';
+import { ConversationModule } from './conversation/conversation.module';
 
 @Module({})
 export class OpenAiModule {
   static create(config: ConfigurationParameters): DynamicModule {
     return {
       module: OpenAiModule,
-      imports: [ImageModule],
+      imports: [ImageModule, ConversationModule],
       providers: [
         { provide: 'OPENAI_CONFIG_OPTIONS', useValue: config },
         OpenAiService,

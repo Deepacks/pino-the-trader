@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
-import { AnalyticsModule } from 'src/modules/analytics/analytics.module';
 import { UserModule } from 'src/modules/user/user.module';
 import { DiscordTokenModule } from 'src/modules/discordToken/discordToken.module';
 import { AuthController } from './auth.controller';
@@ -24,7 +23,6 @@ import { GoogleStrategy } from './strategies/google.strategy';
         signOptions: { expiresIn: '7d' },
       }),
     }),
-    AnalyticsModule,
     UserModule,
     DiscordTokenModule,
   ],

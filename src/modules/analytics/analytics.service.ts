@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
+import { INTERACTION_NAME2KEY } from './constants/interactionName2Key.constant';
 import { Analytics, AnalyticsDocument } from 'src/schemas/analytics.schema';
 import { AnalyticInteraction } from './types/analyticInteraction.types';
-import { INTERACTION_NAME2KEY } from './constants/interactionName2Key.constant';
+import { UserAnalyticsDto } from './dto/userAnalytics-dto.type';
 
 @Injectable()
 export class AnalyticsService {
@@ -56,5 +57,24 @@ export class AnalyticsService {
     });
 
     return true;
+  }
+
+  async getUserAnalyticsData(
+    userId: string,
+    isAdmin: boolean,
+    requestedUser?: string,
+  ): Promise<UserAnalyticsDto> {
+    if (userId !== requestedUser && !isAdmin) {
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    }
+
+    const userAnalytics = await this.analyticsModel.findOne(
+      {
+        user: requestedUser ?? userId,
+      },
+      { _id: false, lastLogin: true, openAiData: true },
+    );
+
+    return userAnalytics;
   }
 }

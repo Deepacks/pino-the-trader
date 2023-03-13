@@ -16,11 +16,14 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  public async validate(tokenDto: TokenDTO): Promise<{ userId: string }> {
-    await this.authService.validateUser(tokenDto);
+  public async validate(
+    tokenDto: TokenDTO,
+  ): Promise<{ userId: string; admin: boolean }> {
+    const user = await this.authService.validateUser(tokenDto);
 
     return {
       userId: tokenDto.userId,
+      admin: user.admin,
     };
   }
 
