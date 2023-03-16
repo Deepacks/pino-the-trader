@@ -64,8 +64,8 @@ export class AnalyticsService {
     isAdmin: boolean,
     requestedUser?: string,
   ): Promise<UserAnalyticsDto> {
-    if (userId !== requestedUser && !isAdmin) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    if (requestedUser && userId !== requestedUser && !isAdmin) {
+      throw new HttpException('User is not admin', HttpStatus.UNAUTHORIZED);
     }
 
     const userAnalytics = await this.analyticsModel.findOne(
