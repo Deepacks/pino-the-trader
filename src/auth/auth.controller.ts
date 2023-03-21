@@ -39,7 +39,7 @@ export class AuthController {
     res.redirect(
       isDev()
         ? `http://localhost:3000/discord/webapp${requestedRoute}`
-        : `https://vlad-hub.com/discord/webapp${requestedRoute}`,
+        : `${getEnvVar('client')}/discord/webapp${requestedRoute}`,
     );
   }
 
@@ -62,8 +62,8 @@ export class AuthController {
     res.cookie('Bearer', token, options);
     res.redirect(
       isDev()
-        ? `http://localhost:3000/discord/webapp/auth/google`
-        : `https://vlad-hub.com/discord/webapp/auth/google`,
+        ? 'http://localhost:3000/discord/webapp/auth/google'
+        : `${getEnvVar('client')}/discord/webapp/auth/google`,
     );
   }
 }

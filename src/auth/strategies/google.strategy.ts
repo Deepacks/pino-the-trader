@@ -14,7 +14,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       clientSecret: getEnvVar('google_secret'),
       callbackURL: isDev()
         ? 'http://localhost:3002/discord/api/auth/google/redirect'
-        : 'https://vlad-hub.com/discord/api/auth/google/redirect',
+        : `${getEnvVar('client')}/discord/api/auth/google/redirect`,
       scope: ['email', 'profile'],
     });
   }
