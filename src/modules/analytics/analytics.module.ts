@@ -7,7 +7,7 @@ import { AnalyticsService } from './analytics.service';
 
 @Module({})
 export class AnalyticsModule {
-  static create(): DynamicModule {
+  static forRoot(): DynamicModule {
     return {
       module: AnalyticsModule,
       imports: [

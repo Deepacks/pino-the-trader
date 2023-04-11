@@ -5,6 +5,7 @@ import { DiscordModule } from '@discord-nestjs/core';
 import { GatewayIntentBits } from 'discord.js';
 
 import { getEnvVar } from './helpers/getEnvVar.helper';
+import { ClientModule } from './modules/@client/client.module';
 import { OpenAiModule } from './modules/@ai/OpenAi.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { AuthModule } from './auth/auth.module';
@@ -45,8 +46,9 @@ import { BotModule } from './modules/@bot/bot.module';
       },
     }),
 
-    OpenAiModule.create({ apiKey: getEnvVar('openAiApiKey') }),
-    AnalyticsModule.create(),
+    ClientModule.forRoot(),
+    OpenAiModule.forRoot({ apiKey: getEnvVar('openAiApiKey') }),
+    AnalyticsModule.forRoot(),
 
     AuthModule,
     BotModule,

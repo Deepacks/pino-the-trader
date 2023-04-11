@@ -4,19 +4,20 @@ import {
   Handler,
   InteractionEvent,
 } from '@discord-nestjs/core';
+import { ChatCompletionRequestMessage } from 'openai';
 import { SlashCommandPipe } from '@discord-nestjs/common';
 import { ClientEvents } from 'discord.js';
 
 import { commandsData } from '../../data/commands.data';
 import { AskDto } from 'src/modules/@ai/conversation/dto/ask.dto';
-import { ConversationService } from 'src/modules/@ai/conversation/conversation.service';
+import { ClientService } from 'src/modules/@client/client.service';
 
 @Command({
   name: commandsData.ask.name,
   description: commandsData.ask.description,
 })
 export class AskCommand {
-  constructor(private conversationService: ConversationService) {}
+  constructor(private readonly clientService: ClientService) {}
 
   @Handler()
   async onAsk(
@@ -27,14 +28,19 @@ export class AskCommand {
 
     await interaction.reply("I'm thinking...");
 
-    const answer = await this.conversationService.generateAnswer(
-      { discordId: interaction.user.id },
-      text,
-    );
-    interaction.editReply(
-      answer.startsWith('Per favore, registrati su')
-        ? answer
-        : `Q: ${text}\nA:${answer}`,
-    );
+    const message: ChatCompletionRequestMessage = {
+      role: 'user',
+      content: text,
+    };
+
+    const response = await this.clientService.undiciClient.request({
+      path: '/text/chat/marv',
+      headers: ClientService.headers,
+      method: 'POST',
+      body: JSON.stringify(message),
+    });
+    const answer = await response.body.text();
+
+    interaction.editReply(answer);
   }
 }
