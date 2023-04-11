@@ -34,7 +34,7 @@ export class AskCommand {
     };
 
     const response = await this.clientService.undiciClient.request({
-      path: '/text/chat/marv',
+      path: `${ClientService.basePath}/text/chat/marv`,
       headers: ClientService.headers,
       method: 'POST',
       body: JSON.stringify(message),

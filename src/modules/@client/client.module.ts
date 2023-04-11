@@ -1,5 +1,6 @@
-import { ClientService } from '@discord-nestjs/core/dist/services/client.service';
 import { DynamicModule, Module } from '@nestjs/common';
+
+import { ClientService } from './client.service';
 
 @Module({})
 export class ClientModule {

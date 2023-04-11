@@ -3,7 +3,9 @@ import { Client } from 'undici';
 
 @Injectable()
 export class ClientService {
-  static headers: { 'Content-Type': 'application/json' };
+  static basePath = '/undici/api';
+  static headers = { 'Content-Type': 'application/json' };
+
   private _undiciClient: Client;
 
   get undiciClient() {
@@ -11,6 +13,6 @@ export class ClientService {
   }
 
   constructor() {
-    this._undiciClient = new Client('https://vlad-hub.com/undici/api');
+    this._undiciClient = new Client('https://vlad-hub.com');
   }
 }
