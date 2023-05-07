@@ -15,4 +15,6 @@ RUN pnpm build && \
     rm -rf src node_modules pnpm-lock.yaml && \
     pnpm i --prod && pnpm store prune
 
+EXPOSE 3001
+
 CMD [ "pnpm", "start:prod" ]

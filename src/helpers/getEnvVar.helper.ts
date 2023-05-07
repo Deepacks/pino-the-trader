@@ -1,4 +1,6 @@
-import { secrets } from 'docker-secret';
+import { secrets } from 'docker-secret'
 
 export const getEnvVar: (n: string) => string = (n) =>
-  process.env[n]?.length > 0 ? process.env[n] : secrets[`discord_${n}`];
+  process.env.NODE_ENV === 'development'
+    ? process.env[n]
+    : secrets[`DISCORD_BOT_${n}`]

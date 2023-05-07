@@ -1,31 +1,19 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
-import { DiscordModule } from '@discord-nestjs/core';
-import { GatewayIntentBits } from 'discord.js';
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { DiscordModule } from '@discord-nestjs/core'
+import { GatewayIntentBits } from 'discord.js'
 
-import { getEnvVar } from './helpers/getEnvVar.helper';
-import { ClientModule } from './modules/@client/client.module';
-import { OpenAiModule } from './modules/@ai/OpenAi.module';
-import { AnalyticsModule } from './modules/analytics/analytics.module';
-import { AuthModule } from './auth/auth.module';
-import { BotModule } from './modules/@bot/bot.module';
+import { getEnvVar } from './helpers/getEnvVar.helper'
+import { CoreModule } from './core/core.module'
+import { AiClientModule } from './client/aiClient.module'
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRootAsync({
-      useFactory: () => ({
-        uri: `mongodb://${getEnvVar('mongo_host')}:27017/discord`,
-        authSource: 'discord',
-        user: getEnvVar('mongo_user'),
-        pass: getEnvVar('mongo_pass'),
-      }),
-    }),
     DiscordModule.forRootAsync({
       useFactory: () => {
         return {
-          token: getEnvVar('token'),
+          token: getEnvVar('TOKEN'),
           discordClientOptions: {
             intents: [
               GatewayIntentBits.Guilds,
@@ -37,21 +25,16 @@ import { BotModule } from './modules/@bot/bot.module';
           },
           registerCommandOptions: [
             {
-              forGuild: getEnvVar('guildId'),
-              allowFactory: () => false,
+              forGuild: getEnvVar('GUILD_ID'),
+              removeCommandsBefore: true,
             },
           ],
           failOnLogin: true,
-        };
+        }
       },
     }),
-
-    ClientModule.forRoot(),
-    OpenAiModule.forRoot({ apiKey: getEnvVar('openAiApiKey') }),
-    AnalyticsModule.forRoot(),
-
-    AuthModule,
-    BotModule,
+    AiClientModule,
+    CoreModule,
   ],
 })
 export class AppModule {}
