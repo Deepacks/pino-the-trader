@@ -39,6 +39,6 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             docker image pull deepacks/trade-enjoyer:latest
-            docker service update --image deepacks/trade-enjoyer:latest discord_bot
+            docker service update --with-registry-auth --image deepacks/trade-enjoyer:latest discord_bot
             docker container prune -f
             docker image prune -f
