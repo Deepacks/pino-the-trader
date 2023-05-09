@@ -14,4 +14,17 @@ export const commandsData = {
           .setRequired(true),
       ),
   },
+  textToImage: {
+    name: 'text-to-image',
+    description: 'Convert a text into an image',
+    data: new SlashCommandBuilder()
+      .setName('text-to-image')
+      .setDescription('Convert a text into an image')
+      .addStringOption((option) =>
+        option
+          .setName('text')
+          .setDescription('The image prompt')
+          .setRequired(true),
+      ),
+  },
 }

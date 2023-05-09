@@ -9,8 +9,8 @@ import { ClientEvents } from 'discord.js'
 import { ChatCompletionRequestMessage } from 'src/client/types/openAi.types'
 
 import { commandsData } from '../data/commands.data'
-import { AskDto } from '../dto/ask-dto.types'
 import { AiClientService } from 'src/client/aiClient.service'
+import { AskDto } from '../dto/ask-dto.type'
 
 @Command({
   name: commandsData.ask.name,
@@ -25,16 +25,13 @@ export class AskCommand {
     @EventParams() [interaction]: ClientEvents['interactionCreate'],
   ) {
     if (!interaction.isRepliable()) return 'Bad request'
-
     await interaction.reply("I'm thinking...")
 
     const message: ChatCompletionRequestMessage = {
       role: 'user',
       content: askDto.text,
     }
-
     const answer = await this.aiClientService.getMarvResponse([message])
-
     interaction.editReply(`Q: ${askDto.text}\n A: ${answer}`)
   }
 }
