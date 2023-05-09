@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  build-push-docker-image:
+  build-docker-image:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,20 +25,20 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-  # pull-update-digital-ocean-swarm:
-  #   runs-on: ubuntu-latest
-  #   needs: [build-push-docker-image]
+  pull-update-digital-ocean-swarm:
+    runs-on: ubuntu-latest
+    needs: [build-docker-image]
 
-  #   steps:
-  #     - name: ssh update service
-  #       uses: appleboy/ssh-action@v0.1.7
-  #       with:
-  #         host: ${{ secrets.HOST }}
-  #         username: ${{ secrets.USERNAME }}
-  #         key: ${{ secrets.KEY }}
-  #         passphrase: ${{ secrets.PASSPHRASE }}
-  #         script: |
-  #           docker image pull deepacks/trade-enjoyer:latest
-  #           docker service update --image deepacks/trade-enjoyer:latest --with-registry-auth discord-server
-  #           docker container prune -f
-  #           docker image prune -f
+    steps:
+      - name: ssh update service
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            docker image pull deepacks/trade-enjoyer:latest
+            docker service update --image deepacks/trade-enjoyer:latest discord_bot
+            docker container prune -f
+            docker image prune -f
