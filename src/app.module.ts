@@ -18,9 +18,10 @@ import { AiClientModule } from './client/aiClient.module'
             intents: [
               GatewayIntentBits.Guilds,
               GatewayIntentBits.GuildMessages,
+              GatewayIntentBits.GuildVoiceStates,
+              GatewayIntentBits.GuildIntegrations,
               GatewayIntentBits.DirectMessages,
               GatewayIntentBits.MessageContent,
-              GatewayIntentBits.GuildIntegrations,
             ],
           },
           registerCommandOptions: [
