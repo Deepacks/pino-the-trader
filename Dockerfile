@@ -1,4 +1,4 @@
-FROM node:16.18.1-alpine3.16
+FROM node:20-alpine
 
 RUN npm install --location=global npm && \
     npm install --location=global pnpm
