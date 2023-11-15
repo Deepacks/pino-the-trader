@@ -71,10 +71,12 @@ export class GatewayService {
   ): Promise<void> {
     const userId = newVoiceState?.id ?? oldVoiceState?.id
 
-    if (userId === BOT_DISCORD_USER_ID) return
-
     const currentChannel = newVoiceState.channel
     const previousChannel = oldVoiceState.channel
+
+    if (userId === BOT_DISCORD_USER_ID || currentChannel === previousChannel) {
+      return
+    }
 
     if (
       !currentChannel ||
